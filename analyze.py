@@ -1,8 +1,8 @@
 import pandas as pd
 
-def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col):
+def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col : int):
     data_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=data_sheet_name, index_col=0)
-    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=0, dtype=object)
+    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=0)
 
     totalread = data_df.sum(axis=0)
 
@@ -17,6 +17,11 @@ def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_ex
     rpkm = rpk.div(totalread / 1e6, axis=1)
 
     tpm = rpk.div(rpktotal).mul(1000000)
+
+    rpm.reset_index(drop=True, inplace=True)
+    rpk.reset_index(drop=True, inplace=True)
+    rpkm.reset_index(drop=True, inplace=True)
+    tpm.reset_index(drop=True, inplace=True)
 
     new_sheet = pd.concat([rpm, rpk, rpkm, tpm], keys=['rpm', 'rpk', 'rpkm', 'tpm'], axis=1).swaplevel(axis=1).sort_index(axis=1)
 
