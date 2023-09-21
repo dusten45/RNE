@@ -82,7 +82,7 @@ class Program(QWidget):
                 elif os.path.splitext(self.lineedit_File_Path.text())[1] != ".xlsx":
                     QMessageBox.about(self, "Error", ".xlsx File Only")
                 else:
-                    Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), ensembl_exist, self.lineedit_Column.text())
+                    Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), ensembl_exist, int(self.lineedit_Column.text()))
                     QMessageBox.about(self, 'Done!', 'Check \'result.csv\' file.')
             except:
                 QMessageBox.about(self, 'Error', traceback.format_exc())

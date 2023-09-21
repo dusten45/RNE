@@ -2,7 +2,7 @@ import pandas as pd
 
 def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col : int):
     data_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=data_sheet_name, index_col=0)
-    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=0)
+    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=col)
 
     totalread = data_df.sum(axis=0)
 
