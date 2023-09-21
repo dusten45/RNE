@@ -11,6 +11,6 @@ class Button(QToolButton):
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()
-        size.setHeight(size.height() + 70)
+        size.setHeight(size.height() + 30)
         size.setWidth(max(size.width(), size.height()))
         return size

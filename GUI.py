@@ -22,7 +22,7 @@ class Program(QWidget):
         
         self.lineedit_Column = Lineedit('', True, self.textChanged)
 
-        self.label_Column = QLabel("If there is Ensembl Id : ")
+        self.label_ensembl = QLabel("If there is Ensembl Id : ")
 
         self.lineedit_ensembl = Lineedit('True : 1 / False : 0', True, self.textChanged)
 
@@ -53,12 +53,14 @@ class Program(QWidget):
 
         mainLayout.addWidget(self.label_File_Path, 0, 0)
         mainLayout.addWidget(self.lineedit_File_Path, 1, 0)
-        mainLayout.addWidget(self.label_Column, 2, 0)
-        mainLayout.addWidget(self.lineedit_Column, 3, 0)
-        mainLayout.addWidget(self.label_sheetname, 4, 0)
-        mainLayout.addLayout(sheetnameLayout, 5, 0)
-        mainLayout.addWidget(self.label_check, 6, 0)
-        mainLayout.addLayout(btnLayout, 7, 0)
+        mainLayout.addWidget(self.label_ensembl, 2, 0)
+        mainLayout.addWidget(self.lineedit_ensembl, 3, 0)
+        mainLayout.addWidget(self.label_Column, 4, 0)
+        mainLayout.addWidget(self.lineedit_Column, 5, 0)
+        mainLayout.addWidget(self.label_sheetname, 6, 0)
+        mainLayout.addLayout(sheetnameLayout, 7, 0)
+        mainLayout.addWidget(self.label_check, 8, 0)
+        mainLayout.addLayout(btnLayout, 9, 0)
 
         self.setLayout(mainLayout)
 
@@ -80,7 +82,7 @@ class Program(QWidget):
                 elif os.path.splitext(self.lineedit_File_Path.text())[1] != ".xlsx":
                     QMessageBox.about(self, "Error", ".xlsx File Only")
                 else:
-                    Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), ensembl_exist)
+                    Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), ensembl_exist, self.lineedit_Column.text())
                     QMessageBox.about(self, 'Done!', 'Check \'result.csv\' file.')
             except:
                 QMessageBox.about(self, 'Error', traceback.format_exc())

@@ -1,8 +1,8 @@
 import pandas as pd
 
-def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool):
+def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col):
     data_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=data_sheet_name, index_col=0)
-    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=9, dtype=object)
+    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=0, dtype=object)
 
     totalread = data_df.sum(axis=0)
 
