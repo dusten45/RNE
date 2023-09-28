@@ -17,12 +17,7 @@ def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_ex
     rpkm = rpk.div(totalread / 1e6, axis=1)
 
     tpm = rpk.div(rpktotal).mul(1000000)
-
-    rpm.reset_index(drop=True, inplace=True)
-    rpk.reset_index(drop=True, inplace=True)
-    rpkm.reset_index(drop=True, inplace=True)
-    tpm.reset_index(drop=True, inplace=True)
-
+    
     new_sheet = pd.concat([rpm, rpk, rpkm, tpm], keys=['rpm', 'rpk', 'rpkm', 'tpm'], axis=1).swaplevel(axis=1).sort_index(axis=1)
 
     new_sheet.to_csv('result.csv')
