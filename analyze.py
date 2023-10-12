@@ -1,8 +1,27 @@
+from os import error
+from find_length_by_ensembl import get_gene_length
+import find_length_by_id
 import pandas as pd
 
 def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col : int):
     data_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=data_sheet_name, index_col=0)
-    info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=col)
+    
+    if ensembl_exist == True:
+        info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=col)
+
+    else:
+        temp = data_df.index.to_list()
+        cnt = 0
+
+        for i in temp:
+            try:
+                temp[cnt] = get_gene_length(i)
+                cnt+=1
+            except:
+                return error
+
+        info_df = pd.DataFrame(temp, index=pd.Index(data_df.index.to_list()), columns=['Length'])
+        print(info_df)
 
     totalread = data_df.sum(axis=0)
 
