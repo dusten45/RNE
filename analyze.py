@@ -1,27 +1,46 @@
 from os import error
-from find_length_by_ensembl import get_gene_length
-import find_length_by_id
+import find_length_by_ensembl as f_ensembl
+import find_length_by_symbol as f_symbol
 import pandas as pd
 
-def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col : int):
+def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col : int, kind : int):
     data_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=data_sheet_name, index_col=0)
-    
-    if ensembl_exist == True:
-        info_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=col)
+    info_df = pd.DataFrame()
 
-    else:
-        temp = data_df.index.to_list()
+    if ensembl_exist == True:
+        a = pd.read_excel(FilePath, engine="openpyxl", sheet_name=info_sheet_name, index_col=col)
+        info_df = a
+
+    elif kind == 1:
+        temp = data_df.index.to_series()
+        a = pd.Series()
         cnt = 0
 
         for i in temp:
             try:
-                temp[cnt] = get_gene_length(i)
+                a[cnt] = f_symbol.Run(i)
                 cnt+=1
             except:
                 return error
 
-        info_df = pd.DataFrame(temp, index=pd.Index(data_df.index.to_list()), columns=['Length'])
-        print(info_df)
+        info_df = info_df.set_axis(temp, axis=0)
+        info_df.insert(0, 'Length', a.to_list())
+
+    else:
+        temp = data_df.index.to_series()
+        a = pd.Series()
+        cnt = 0
+
+        for i in temp:
+            try:
+                a[cnt] = f_ensembl.Run(i)
+                print(a)
+                cnt+=1
+            except:
+                return error
+
+        info_df = info_df.set_axis(temp, axis=0)
+        info_df.insert(0, 'Length', a.to_list())
 
     totalread = data_df.sum(axis=0)
 

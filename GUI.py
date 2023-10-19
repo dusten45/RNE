@@ -13,6 +13,10 @@ class Program(Widgets):
         checkLayout.addWidget(self.label_ensembl, 0, 0)
         checkLayout.addWidget(self.check_ensembl, 0, 1)
 
+        ensemblLayout = QGridLayout()
+        ensemblLayout.addWidget(self.lineedit_kind, 0, 1)
+        ensemblLayout.addLayout(checkLayout, 0, 0)
+
         sheetnameLayout = QGridLayout()
         sheetnameLayout.addWidget(self.lineedit_datasheetname, 0, 0)
         sheetnameLayout.addWidget(self.lineedit_infosheetname, 0, 1)
@@ -26,14 +30,13 @@ class Program(Widgets):
 
         mainLayout.addWidget(self.label_File_Path, 0, 0)
         mainLayout.addWidget(self.lineedit_File_Path, 1, 0)
-        mainLayout.addLayout(checkLayout, 2, 0)
-        mainLayout.addWidget(self.lineedit_kind, 2, 1)
-        mainLayout.addWidget(self.label_Column, 4, 0)
-        mainLayout.addWidget(self.lineedit_Column, 5, 0)
-        mainLayout.addWidget(self.label_sheetname, 6, 0)
-        mainLayout.addLayout(sheetnameLayout, 7, 0)
-        mainLayout.addWidget(self.label_check, 8, 0)
-        mainLayout.addLayout(btnLayout, 9, 0)
+        mainLayout.addLayout(ensemblLayout, 2, 0)
+        mainLayout.addWidget(self.label_Column, 3, 0)
+        mainLayout.addWidget(self.lineedit_Column, 4, 0)
+        mainLayout.addWidget(self.label_sheetname, 5, 0)
+        mainLayout.addLayout(sheetnameLayout, 6, 0)
+        mainLayout.addWidget(self.label_check, 7, 0)
+        mainLayout.addLayout(btnLayout, 8, 0)
 
         self.setLayout(mainLayout)
 

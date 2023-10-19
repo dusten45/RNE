@@ -40,7 +40,10 @@ class Widgets(QWidget):
                 elif os.path.splitext(self.lineedit_File_Path.text())[1] != ".xlsx":
                     QMessageBox.about(self, "Error", ".xlsx File Only")
                 else:
-                    Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), self.check_ensembl.isChecked(), int(self.lineedit_Column.text()))
+                    if self.check_ensembl.isChecked():
+                        Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), self.check_ensembl.isChecked(), int(self.lineedit_Column.text()), 0)
+                    else:
+                        Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), '', self.check_ensembl.isChecked(), 0, int(self.lineedit_kind.text()))
                     QMessageBox.about(self, 'Done!', 'Check \'result.csv\' file.')
             except:
                 QMessageBox.about(self, 'Error', traceback.format_exc())
@@ -62,12 +65,15 @@ class Widgets(QWidget):
     # Callback Lineedit
     def textChanged(self):
         self.check = False
-        if self.lineedit_Column.text() != "":
+        if self.lineedit_File_Path.text() != "":
             if self.lineedit_datasheetname.text() != "":
-                if self.lineedit_File_Path.text() != "":
+                if self.check_ensembl.isChecked():
                     if self.lineedit_infosheetname.text() != '':
-                        if self.lineedit_kind.text() != '':
+                        if self.lineedit_Column.text() != "":
                             self.check = True
+
+                elif self.lineedit_kind.text() != '':
+                    self.check = True
 
         if self.check:
             self.label_check.setText("State : Ready")

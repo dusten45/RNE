@@ -16,17 +16,10 @@ def get_gene_length(ensembl_gene_id):
         print(f"오류 발생: {e}")
         return None
 
-if __name__ == "__main__":
-    while True:
-        ensembl_gene_id = input("Ensembl Gene ID를 입력하세요 (빈 문자열을 입력하면 종료): ")
-        
-        if not ensembl_gene_id:
-            break
-
-        gene_length = get_gene_length(ensembl_gene_id)
+def Run(ensembl_gene_id):
+    gene_length = get_gene_length(ensembl_gene_id)
     
-        if gene_length is not None:
-            print(f"Ensembl Gene ID: {ensembl_gene_id}")
-            print(f"Gene Length: {gene_length} bp")
-        else:
-            print("Gene 정보를 검색할 수 없거나 gene length를 찾을 수 없습니다.")
+    if gene_length is not None:
+        return gene_length
+    else:
+        return None
