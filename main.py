@@ -1,11 +1,11 @@
-from GUI import Program
+from layout import Layouts
 from PyQt6.QtWidgets import QApplication
 import sys
 
 #Start program
 def main():
     app = QApplication(sys.argv)
-    pr = Program()
+    pr = Layouts()
     pr.show()
     sys.exit(app.exec())
 
