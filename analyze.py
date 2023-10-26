@@ -2,6 +2,7 @@ from os import error
 import find_length_by_ensembl as f_ensembl
 import find_length_by_symbol as f_symbol
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_exist : bool, col : int, kind : int):
     data_df = pd.read_excel(FilePath, engine="openpyxl", sheet_name=data_sheet_name, index_col=0)
@@ -59,3 +60,8 @@ def Run(FilePath : str, data_sheet_name : str, info_sheet_name : str, ensembl_ex
     new_sheet = pd.concat([rpm, rpk, rpkm, tpm], keys=['rpm', 'rpk', 'rpkm', 'tpm'], axis=1).swaplevel(axis=1).sort_index(axis=1)
 
     new_sheet.to_csv('result.csv')
+
+    print(data_df.index.to_list())
+
+    plt.plot(data_df.index.to_list(), tpm['L400T'].to_list())
+    plt.show()
