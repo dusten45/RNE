@@ -8,7 +8,8 @@ class Button(QToolButton):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.clicked.connect(callback)
-        self.setImage(filename)
+        if filename != '':
+            self.setImage(filename)
 
     
     def setImage(self, filename):

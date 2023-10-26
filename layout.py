@@ -1,46 +1,35 @@
 # Import modules
 from PyQt6.QtWidgets import QMessageBox, QGridLayout
-from pages import Pages
+from widgets import Widgets
 
 
 # Define Layouts
-class Layouts(Pages):
+class Layouts(Widgets):
     def __init__(self):
         super().__init__()
         self.setGeometry(200, 200, 800, 400)
         self.setStyleSheet('background:rgb(255,255,255)')
 
-        # Widgets Placement
-        checkLayout = QGridLayout()
-        checkLayout.addWidget(self.lbInfoCheck, 0, 0)
-        checkLayout.addWidget(self.chkboxInfoCheck, 0, 1)
+        self.pgFilePath = QGridLayout()
+        self.pgFilePath.addWidget(self.chkboxFilePath, 0, 0)
+        self.pgFilePath.addWidget(self.lbFilePath, 1, 0)
+        self.pgFilePath.addWidget(self.leFilePath, 2, 0)
+        self.pgFilePath.addWidget(self.leInfoFilePath, 3, 0)
 
-        ensemblLayout = QGridLayout()
-        ensemblLayout.addWidget(self.leInfoKind, 0, 1)
-        ensemblLayout.addLayout(checkLayout, 0, 0)
+        self.pgData = QGridLayout()
+        self.pgData.addWidget(self.lbSheetNames, 0, 0)
+        self.pgData.addWidget(self.leDataSheetName, 1, 0)
 
-        sheetnameLayout = QGridLayout()
-        sheetnameLayout.addWidget(self.leDataSheetName, 0, 0)
-        sheetnameLayout.addWidget(self.leInfoSheetName, 0, 1)
+        self.pgInfo = QGridLayout()
+        self.pgInfo.addWidget(self.lbInfoCheck, 0, 0)
+        self.pgInfo.addWidget(self.rbtnInfoSymb, 1, 0)
+        self.pgInfo.addWidget(self.rbtnInfoSymb, 2, 0)
+        layout = QGridLayout()
+        layout.addWidget(self.leInfoCol, 0, 1)
+        layout.addWidget(self.leInfoSheetName, 0, 0)
+        self.pgInfo.addLayout(layout, 3, 0)
 
-        btnLayout = QGridLayout()
-        btnLayout.addWidget(self.btnAnalyze, 0, 0)
-        btnLayout.addWidget(self.btnFindFile, 0, 1)
-
-        # Main Layout
-        mainLayout = QGridLayout()
-
-        mainLayout.addWidget(self.lbFilePath, 0, 0)
-        mainLayout.addWidget(self.leFilePath, 1, 0)
-        mainLayout.addLayout(ensemblLayout, 2, 0)
-        mainLayout.addWidget(self.lbInfoCol, 3, 0)
-        mainLayout.addWidget(self.leInfoCol, 4, 0)
-        mainLayout.addWidget(self.lbSheetNames, 5, 0)
-        mainLayout.addLayout(sheetnameLayout, 6, 0)
-        mainLayout.addWidget(self.lbStateCheck, 7, 0)
-        mainLayout.addLayout(btnLayout, 8, 0)
-
-        self.setLayout(mainLayout)
+        self.pgHome = QGridLayout()
 
         self.setWindowTitle("Cancer Data Analyser")
 

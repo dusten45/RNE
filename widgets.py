@@ -2,7 +2,7 @@
 from analyze import Run
 from lineedit import Lineedit
 from button import Button
-from PyQt6.QtWidgets import QWidget, QLabel, QMessageBox, QFileDialog, QCheckBox
+from PyQt6.QtWidgets import QWidget, QLabel, QMessageBox, QFileDialog, QCheckBox, QRadioButton
 import os, traceback
 
 # Define Widgets
@@ -19,15 +19,21 @@ class Widgets(QWidget):
         self.lbStateCheck = QLabel("State : Not Ready")
 
         self.leFilePath = Lineedit('C:/example_file/example.xlsx', False, self.textChanged)
-        self.leInfoKind = Lineedit('ensembl : 0 / symbol : 1', True, self.textChanged)
+        self.leInfoFilePath = Lineedit('Info File Path', False, self.textChanged)
         self.leInfoCol = Lineedit('', True, self.textChanged)
         self.leDataSheetName = Lineedit('Name of the data sheet', False, self.textChanged)
         self.leInfoSheetName = Lineedit('Name of the info sheet (gene length, symbol, etc.)', False, self.textChanged)
 
-        self.chkboxInfoCheck = QCheckBox()
+        self.chkboxInfo = QCheckBox()
+        self.chkboxInfo.stateChanged.connect(self.stateChanged)
+        self.chkboxFilePath = QCheckBox()
+        self.chkboxFilePath.stateChanged.connect(self.stateChanged)
 
         self.btnAnalyze = Button(self.Analyze, 'Analyze.bmp')
         self.btnFindFile = Button(self.Findfile, 'Find File.bmp')
+
+        self.rbtnInfoSymb = QRadioButton('Symbol')
+        self.rbtnInfoEnsm = QRadioButton('Ensembl ID')
 
 
     # Callback Analyze Button
@@ -38,10 +44,10 @@ class Widgets(QWidget):
             elif os.path.splitext(self.leFilePath.text())[1] != ".xlsx":
                 QMessageBox.about(self, "Error", ".xlsx File Only")
             else:
-                if self.chkboxInfoCheck.isChecked():
-                    Run(self.leFilePath.text(), self.leDataSheetName.text(), self.leInfoSheetName.text(), self.chkboxInfoCheck.isChecked(), int(self.leInfoCol.text()), 0)
+                if self.chkboxInfo.isChecked():
+                    Run(self.leFilePath.text(), self.leDataSheetName.text(), self.leInfoSheetName.text(), self.chkboxInfo.isChecked(), int(self.leInfoCol.text()), 0, self.leInfoFilePath.text())
                 else:
-                    Run(self.leFilePath.text(), self.leDataSheetName.text(), '', self.chkboxInfoCheck.isChecked(), 0, int(self.leInfoKind.text()))
+                    Run(self.leFilePath.text(), self.leDataSheetName.text(), '', self.chkboxInfo.isChecked(), 0, int(self.rbtnInfoSymb.isChecked()), self.leInfoFilePath.text())
                 QMessageBox.about(self, 'Done!', 'Check \'result.csv\' file.')
         except:
             QMessageBox.about(self, 'Error', traceback.format_exc())
@@ -66,15 +72,46 @@ class Widgets(QWidget):
         self.check = False
         if self.leFilePath.text() != "":
             if self.leDataSheetName.text() != "":
-                if self.chkboxInfoCheck.isChecked():
+                if self.chkboxInfo.isChecked():
                     if self.leInfoSheetName.text() != '':
                         if self.leInfoCol.text() != "":
-                            self.check = True
+                            if self.chkboxFilePath.isChecked():
+                                if self.leInfoFilePath != "":
+                                    self.check = True
+
+                            else:
+                                self.check = True
 
                 elif self.leInfoKind.text() != '':
-                    self.check = True
+                    if self.chkboxFilePath.isChecked():
+                        if self.leInfoFilePath != "":
+                            self.check = True
+
+                    else:
+                        self.check = True
+
 
         if self.check:
             self.lbStateCheck.setText("State : Ready")
         else:
             self.lbStateCheck.setText("State : Not Ready")
+
+        
+    def stateChanged(self):
+        if self.chkboxFilePath.isChecked():
+            self.leInfoFilePath.setText('')
+            self.leInfoFilePath.setVisible(True)
+        else:
+            self.leInfoFilePath.setVisible(False)
+            self.leInfoFilePath.setText(self.leFilePath)
+
+        if self.chkboxInfo.isChecked():
+            self.rbtnInfoEnsm.setVisible(True)
+            self.rbtnInfoSymb.setVisible(True)
+            self.leInfoSheetName.setVisible(False)
+            self.leInfoCol.setVisible(False)
+        else:
+            self.rbtnInfoSymb.setVisible(False)
+            self.rbtnInfoEnsm.setVisible(False)
+            self.leInfoSheetName.setVisible(True)
+            self.leInfoCol.setVisible(True)

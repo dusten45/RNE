@@ -11,17 +11,14 @@ class Lineedit(QLineEdit):
         self.textChanged.connect(callback)
 
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.setStyleSheet("background-color: #FFFFFF;"
-                            "border-style: solid;"
-                            "border-width: 1px;"
-                            "border-color: #000000;"
-                            "color: black;")
+        self.setStyleSheet("border-radius: 3px;"
+                           "border-width: 2px")
         if i_vali:
             self.setValidator(QIntValidator())
 
 
     def sizeHint(self):
         size = super(Lineedit, self).sizeHint()
-        size.setHeight(size.height() + 5)
+        size.setHeight(size.height() * 2)
         size.setWidth(max(size.width(), size.height()))
         return size
