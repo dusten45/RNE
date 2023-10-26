@@ -13,28 +13,28 @@ class Layouts(Pages):
         # Widgets Placement
         checkLayout = QGridLayout()
         checkLayout.addWidget(self.lbInfoCheck, 0, 0)
-        checkLayout.addWidget(self.check_ensembl, 0, 1)
+        checkLayout.addWidget(self.chkboxInfoCheck, 0, 1)
 
         ensemblLayout = QGridLayout()
-        ensemblLayout.addWidget(self.lineedit_kind, 0, 1)
+        ensemblLayout.addWidget(self.leInfoKind, 0, 1)
         ensemblLayout.addLayout(checkLayout, 0, 0)
 
         sheetnameLayout = QGridLayout()
-        sheetnameLayout.addWidget(self.lineedit_datasheetname, 0, 0)
-        sheetnameLayout.addWidget(self.lineedit_infosheetname, 0, 1)
+        sheetnameLayout.addWidget(self.leDataSheetName, 0, 0)
+        sheetnameLayout.addWidget(self.leInfoSheetName, 0, 1)
 
         btnLayout = QGridLayout()
-        btnLayout.addWidget(self.button_analyze, 0, 0)
-        btnLayout.addWidget(self.button_findfile, 0, 1)
+        btnLayout.addWidget(self.btnAnalyze, 0, 0)
+        btnLayout.addWidget(self.btnFindFile, 0, 1)
 
         # Main Layout
         mainLayout = QGridLayout()
 
         mainLayout.addWidget(self.lbFilePath, 0, 0)
-        mainLayout.addWidget(self.lineedit_File_Path, 1, 0)
+        mainLayout.addWidget(self.leFilePath, 1, 0)
         mainLayout.addLayout(ensemblLayout, 2, 0)
         mainLayout.addWidget(self.lbInfoCol, 3, 0)
-        mainLayout.addWidget(self.lineedit_Column, 4, 0)
+        mainLayout.addWidget(self.leInfoCol, 4, 0)
         mainLayout.addWidget(self.lbSheetNames, 5, 0)
         mainLayout.addLayout(sheetnameLayout, 6, 0)
         mainLayout.addWidget(self.lbStateCheck, 7, 0)

@@ -9,73 +9,72 @@ import os, traceback
 class Widgets(QWidget):
     def __init__(self):
         super().__init__()
+        self.check : bool
+        self.messagebox = QMessageBox()
 
-        self.label_File_Path = QLabel("File Path : ")
-        self.label_Column = QLabel("Column Number of Gene IDs in Info Sheet : ")
-        self.label_ensembl = QLabel("If there is Ensembl Id : ")
-        self.label_sheetname = QLabel("Sheet Names : ")
-        self.label_check = QLabel("State : Not Ready")
+        self.lbFilePath = QLabel("File Path : ")
+        self.lbInfoCol = QLabel("Column Number of Gene IDs in Info Sheet : ")
+        self.lbInfoCheck = QLabel("If there is gene length : ")
+        self.lbSheetNames = QLabel("Sheet Names : ")
+        self.lbStateCheck = QLabel("State : Not Ready")
 
-        self.lineedit_File_Path = Lineedit('C:/example_file/example.xlsx', False, self.textChanged)
-        self.lineedit_kind = Lineedit('ensembl : 0 / symbol : 1', True, self.textChanged)
-        self.lineedit_Column = Lineedit('', True, self.textChanged)
-        self.lineedit_datasheetname = Lineedit('Name of the data sheet', False, self.textChanged)
-        self.lineedit_infosheetname = Lineedit('Name of the info sheet (gene length, symbol, etc.)', False, self.textChanged)
+        self.leFilePath = Lineedit('C:/example_file/example.xlsx', False, self.textChanged)
+        self.leInfoKind = Lineedit('ensembl : 0 / symbol : 1', True, self.textChanged)
+        self.leInfoCol = Lineedit('', True, self.textChanged)
+        self.leDataSheetName = Lineedit('Name of the data sheet', False, self.textChanged)
+        self.leInfoSheetName = Lineedit('Name of the info sheet (gene length, symbol, etc.)', False, self.textChanged)
 
-        self.check_ensembl = QCheckBox()
+        self.chkboxInfoCheck = QCheckBox()
 
-        self.button_analyze = Button("Analyze", self.buttonClicked)
-        self.button_findfile = Button("Find File", self.buttonClicked)
+        self.btnAnalyze = Button(self.Analyze, 'Analyze.bmp')
+        self.btnFindFile = Button(self.Findfile, 'Find File.bmp')
 
 
-    # Callback Button
-    def buttonClicked(self):
-        button = self.sender()
-        key = button.text() # type: ignore
-
-        if key == 'Analyze':
-            try:
-                if self.check == False:
-                    QMessageBox.about(self, "Error", "Fill Every Box")
-                elif os.path.splitext(self.lineedit_File_Path.text())[1] != ".xlsx":
-                    QMessageBox.about(self, "Error", ".xlsx File Only")
+    # Callback Analyze Button
+    def Analyze(self):
+        try:
+            if self.check == False:
+                QMessageBox.about(self, "Error", "Fill Every Box")
+            elif os.path.splitext(self.leFilePath.text())[1] != ".xlsx":
+                QMessageBox.about(self, "Error", ".xlsx File Only")
+            else:
+                if self.chkboxInfoCheck.isChecked():
+                    Run(self.leFilePath.text(), self.leDataSheetName.text(), self.leInfoSheetName.text(), self.chkboxInfoCheck.isChecked(), int(self.leInfoCol.text()), 0)
                 else:
-                    if self.check_ensembl.isChecked():
-                        Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), self.lineedit_infosheetname.text(), self.check_ensembl.isChecked(), int(self.lineedit_Column.text()), 0)
-                    else:
-                        Run(self.lineedit_File_Path.text(), self.lineedit_datasheetname.text(), '', self.check_ensembl.isChecked(), 0, int(self.lineedit_kind.text()))
-                    QMessageBox.about(self, 'Done!', 'Check \'result.csv\' file.')
-            except:
-                QMessageBox.about(self, 'Error', traceback.format_exc())
-                print(traceback.format_exc())
-            
-        elif key == "Find File":
-            try:
-                frame = QFileDialog.getOpenFileName(self, "Open File", './')
-                if frame[0].endswith(".xlsx"):
-                    self.lineedit_File_Path.setText(frame[0])
-                elif frame[0]:
-                    QMessageBox.about(self, "Error", ".xlsx File Only")
-                else:
-                    QMessageBox.about(self, "Error", 'Failed to Open File')
-            except:
-                QMessageBox.about(self, 'Error', 'Failed to Open explorer.exe')
+                    Run(self.leFilePath.text(), self.leDataSheetName.text(), '', self.chkboxInfoCheck.isChecked(), 0, int(self.leInfoKind.text()))
+                QMessageBox.about(self, 'Done!', 'Check \'result.csv\' file.')
+        except:
+            QMessageBox.about(self, 'Error', traceback.format_exc())
+
+
+    # Callback Finding File Button
+    def Findfile(self):   
+        try:
+            frame = QFileDialog.getOpenFileName(self, "Open File", './')
+            if frame[0].endswith(".xlsx"):
+                self.leFilePath.setText(frame[0])
+            elif frame[0]:
+                QMessageBox.about(self, "Error", ".xlsx File Only")
+            else:
+                QMessageBox.about(self, "Error", 'Failed to Open File')
+        except:
+            QMessageBox.about(self, 'Error', 'Failed to Open explorer.exe')
 
 
     # Callback Lineedit
     def textChanged(self):
         self.check = False
-        if self.lineedit_File_Path.text() != "":
-            if self.lineedit_datasheetname.text() != "":
-                if self.check_ensembl.isChecked():
-                    if self.lineedit_infosheetname.text() != '':
-                        if self.lineedit_Column.text() != "":
+        if self.leFilePath.text() != "":
+            if self.leDataSheetName.text() != "":
+                if self.chkboxInfoCheck.isChecked():
+                    if self.leInfoSheetName.text() != '':
+                        if self.leInfoCol.text() != "":
                             self.check = True
 
-                elif self.lineedit_kind.text() != '':
+                elif self.leInfoKind.text() != '':
                     self.check = True
 
         if self.check:
-            self.label_check.setText("State : Ready")
+            self.lbStateCheck.setText("State : Ready")
         else:
-            self.label_check.setText("State : Not Ready")
+            self.lbStateCheck.setText("State : Not Ready")
