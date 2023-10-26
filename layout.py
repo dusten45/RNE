@@ -1,16 +1,18 @@
 # Import modules
 from PyQt6.QtWidgets import QMessageBox, QGridLayout
-from widgets import Widgets
+from pages import Pages
 
-# Define Program
-class Program(Widgets):
+
+# Define Layouts
+class Layouts(Pages):
     def __init__(self):
         super().__init__()
         self.setGeometry(200, 200, 800, 400)
+        self.setStyleSheet('background:rgb(255,255,255)')
 
         # Widgets Placement
         checkLayout = QGridLayout()
-        checkLayout.addWidget(self.label_ensembl, 0, 0)
+        checkLayout.addWidget(self.lbInfoCheck, 0, 0)
         checkLayout.addWidget(self.check_ensembl, 0, 1)
 
         ensemblLayout = QGridLayout()
@@ -28,14 +30,14 @@ class Program(Widgets):
         # Main Layout
         mainLayout = QGridLayout()
 
-        mainLayout.addWidget(self.label_File_Path, 0, 0)
+        mainLayout.addWidget(self.lbFilePath, 0, 0)
         mainLayout.addWidget(self.lineedit_File_Path, 1, 0)
         mainLayout.addLayout(ensemblLayout, 2, 0)
-        mainLayout.addWidget(self.label_Column, 3, 0)
+        mainLayout.addWidget(self.lbInfoCol, 3, 0)
         mainLayout.addWidget(self.lineedit_Column, 4, 0)
-        mainLayout.addWidget(self.label_sheetname, 5, 0)
+        mainLayout.addWidget(self.lbSheetNames, 5, 0)
         mainLayout.addLayout(sheetnameLayout, 6, 0)
-        mainLayout.addWidget(self.label_check, 7, 0)
+        mainLayout.addWidget(self.lbStateCheck, 7, 0)
         mainLayout.addLayout(btnLayout, 8, 0)
 
         self.setLayout(mainLayout)
@@ -45,7 +47,7 @@ class Program(Widgets):
 
     # Close Program
     def closeEvent(self, event):
-        chk = QMessageBox.warning(self, "Exit", 'Are you sure to exit program?', QMessageBox.StandardButton.Yes| QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+        chk = self.messagebox.warning(self, "Exit", 'Are you sure to exit program?', QMessageBox.StandardButton.Yes| QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
         if chk == QMessageBox.StandardButton.Yes:
             event.accept()
         elif chk == QMessageBox.StandardButton.No:
